@@ -97,8 +97,8 @@ public class ExpenseService {
      * Shared validation for create and update.
      */
     private void validateAmount(Expense expense) {
-        if (expense.getAmount() != null && expense.getAmount().signum() < 0) {
-            throw new IllegalArgumentException("Amount cannot be negative");
+        if (expense.getAmount() != null && expense.getAmount().signum() <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than zero"); 
         }
     }
 }

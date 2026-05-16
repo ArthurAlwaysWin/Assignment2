@@ -65,7 +65,6 @@ export default function ExpenseForm({ editingExpense, onSubmitSuccess, onCancelE
       onSubmitSuccess();
     } catch (err) {
       console.error(err);
-      // Axios 通常把后端的错误信息放在 err.response.data 中
       setError(err.response?.data || err.message || 'Something went wrong while saving.');
     } finally {
       setIsSubmitting(false);
