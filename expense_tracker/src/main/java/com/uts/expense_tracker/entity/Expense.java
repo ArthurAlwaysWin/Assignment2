@@ -11,6 +11,10 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    // new code : take user tag for bill
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
+
     @Column(nullable = false, length = 100)
     private String title;
 
@@ -37,6 +41,17 @@ public class Expense {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    //new code: get and set userId
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    //end for new code
 
     public String getTitle() {
         return title;
