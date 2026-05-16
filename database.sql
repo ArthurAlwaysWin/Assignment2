@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS expenses_tracker;
 
 USE expenses_tracker;
-DROP TABLE IF EXISTS expenses; 
+
 
 CREATE TABLE expenses (
     id INT AUTO_INCREMENT PRIMARY KEY,

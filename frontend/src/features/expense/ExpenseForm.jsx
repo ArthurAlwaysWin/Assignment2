@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import api from '../../api/request';
 
 // Default empty form state
 const INITIAL_STATE = {
@@ -39,10 +40,9 @@ export default function ExpenseForm({ editingExpense, onSubmitSuccess, onCancelE
 
   // 4. Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent page refresh
+    e.preventDefault();
     setError(null);
 
-    // Basic validation
     if (!formData.title || !formData.amount || !formData.expenseDate) {
       setError('Please fill in all required fields.');
       return;
@@ -55,38 +55,23 @@ export default function ExpenseForm({ editingExpense, onSubmitSuccess, onCancelE
 
     setIsSubmitting(true);
     try {
-      const isUpdate = Boolean(editingExpense);
-      const url = isUpdate
-        ? `http://localhost:8080/api/expenses/${editingExpense.id}`
-        : 'http://localhost:8080/api/expenses';
-
-      const method = isUpdate ? 'PUT' : 'POST';
-
-      // Send request to backend
-      const response = await fetch(url, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-          // Since Auth isn't ready yet, we might get 401 later, but let's try standard fetch first.
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (!response.ok) {
-        const msg = await response.text();
-        throw new Error(msg || 'Failed to save expense');
+      if (editingExpense) {
+        await api.put(`/expenses/${editingExpense.id}`, formData);
+      } else {
+        await api.post('/expenses', formData);
       }
 
-      // Success! Reset form and notify parent
       setFormData(INITIAL_STATE);
       onSubmitSuccess();
     } catch (err) {
       console.error(err);
-      setError(err.message || 'Something went wrong while saving.');
+      // Axios 通常把后端的错误信息放在 err.response.data 中
+      setError(err.response?.data || err.message || 'Something went wrong while saving.');
     } finally {
       setIsSubmitting(false);
     }
   };
+
 
   return (
     <div className="card mb-20" style={{ borderTop: '4px solid var(--primary-color)' }}>

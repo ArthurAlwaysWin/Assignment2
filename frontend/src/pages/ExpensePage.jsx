@@ -5,6 +5,8 @@ import ExpenseForm from '../features/expense/ExpenseForm';
 import ExpenseSummary from '../features/expense/ExpenseSummary';
 import MonthlyTrend from '../features/expense/MonthlyTrend';
 import ExpenseList from '../features/expense/ExpenseList';
+import api from '../api/request';
+
 
 export default function ExpensePage() {
   // 1. All our states (data, filters, etc.)
@@ -20,14 +22,8 @@ export default function ExpensePage() {
   const fetchExpenses = async () => {
     setIsLoading(true);
     try {
-      // Temporarily use direct fetch to localhost:8080 since request.js might redirect to login if auth is incomplete.
-      // If we use Member D's api/request.js, we would do: const res = await api.get('/expenses');
-      const response = await fetch('http://localhost:8080/api/expenses');
-      if (!response.ok) {
-        throw new Error('Failed to fetch expenses');
-      }
-      const data = await response.json();
-      setExpenses(data);
+      const response = await api.get('/expenses');
+      setExpenses(response.data); // data of axios in response.data 
     } catch (err) {
       console.error(err);
       setError('Could not connect to the backend server.');
@@ -35,6 +31,7 @@ export default function ExpensePage() {
       setIsLoading(false);
     }
   };
+
 
   // Run once when component mounts
   useEffect(() => {
@@ -72,15 +69,8 @@ export default function ExpensePage() {
   // 4. Handle Deleting an Expense
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/expenses/${id}`, {
-        method: 'DELETE'
-      });
-      if (!response.ok) {
-        throw new Error('Failed to delete expense');
-      }
-      // Refresh the list after successful delete
+      await api.delete(`/expenses/${id}`);
       fetchExpenses();
-      // If we were editing the deleted expense, cancel edit mode
       if (editingExpense && editingExpense.id === id) {
         setEditingExpense(null);
       }
@@ -89,6 +79,7 @@ export default function ExpensePage() {
       alert('Error deleting expense.');
     }
   };
+
 
   return (
     <div className="home-page" style={{ padding: '20px 0' }}>
