@@ -1,94 +1,147 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../api/request";
 
 export default function RegisterPage() {
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+
+    setError("");
+    setSuccess("");
+  };
+
+  const validateForm = () => {
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return false;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match.");
+      return false;
+    }
+
+    return true;
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
     try {
-      const response = await fetch("http://localhost:8080/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          role: "USER",
-        }),
+      const response = await api.post("/auth/register", {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        role: "USER",
       });
 
-      const data = await response.json();
+      setSuccess(response.data.message || "Registration successful.");
 
-      if (response.ok) {
-        setMessage(data.message);
-      } else {
-        setMessage(data.error);
-      }
-
-    } catch (error) {
-      setMessage("Server error");
+      setTimeout(() => {
+        navigate("/login");
+      }, 800);
+    } catch (err) {
+      setError(err.response?.data?.error || "Registration failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div style={{ padding: "40px" }}>
-      <h1>Register</h1>
+    <div className="auth-page">
+      <div className="auth-card">
+        <h1>Create Account</h1>
+        <p className="auth-subtitle">Register to start tracking your expenses.</p>
 
-      <form onSubmit={handleRegister}>
+        {error && <p className="error-message">{error}</p>}
+        {success && <p className="success-message">{success}</p>}
 
-        <div>
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={formData.username}
-            onChange={handleChange}
-          />
-        </div>
+        <form onSubmit={handleRegister}>
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input
+              id="username"
+              type="text"
+              name="username"
+              placeholder="Enter your username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <div>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <div>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="At least 6 characters"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              minLength={6}
+            />
+          </div>
 
-        <button type="submit">
-          Register
-        </button>
+          <div className="form-group">
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              id="confirmPassword"
+              type="password"
+              name="confirmPassword"
+              placeholder="Re-enter your password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+              minLength={6}
+            />
+          </div>
 
-      </form>
+          <button type="submit" className="primary-button" disabled={isSubmitting}>
+            {isSubmitting ? "Creating account..." : "Register"}
+          </button>
+        </form>
 
-      {message && <p>{message}</p>}
-
+        <p className="auth-link-text">
+          Already have an account? <Link to="/login">Go to login</Link>
+        </p>
+      </div>
     </div>
   );
 }
