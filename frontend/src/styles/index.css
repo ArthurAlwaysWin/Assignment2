@@ -546,4 +546,8 @@ button:hover {
 .modal-actions .btn-secondary {
   width: auto;
   padding: 8px 20px;
-}
+}.btn-delete-small:disabled {
+   opacity: 0.4;
+   cursor: not-allowed;
+   background-color: var(--danger-color);
+ }
