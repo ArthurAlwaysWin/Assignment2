@@ -44,6 +44,11 @@ export default function UserManagement() {
   };
 
   const handleDelete = async (id) => {
+    const target = users.find((u) => u.id === id);
+    if (target && target.username === "admin") {
+      alert("You cannot delete the admin account.");
+      return;
+    }
     if (!window.confirm("Delete this user? This cannot be undone.")) return;
     try {
       await api.delete(`/admin/users/${id}`);
@@ -130,6 +135,8 @@ export default function UserManagement() {
                       <button
                           className="btn-delete-small"
                           onClick={() => handleDelete(u.id)}
+                          disabled={u.username === "admin"}
+                          title={u.username === "admin" ? "Cannot delete admin account" : ""}
                       >
                         Delete
                       </button>
