@@ -61,3 +61,30 @@ Finally, I added live summaries (total and category totals), filter controls (da
 ## Notes
 
 - Recommended environment: Java 21+, MySQL 8+, modern browser.
+
+- Member Contributions
+Feixu Chen (Member C) — Admin Module
+Backend files:
+
+expense_tracker/src/main/java/com/uts/expense_tracker/entity/UserActivity.java
+expense_tracker/src/main/java/com/uts/expense_tracker/repository/UserActivityRepository.java
+expense_tracker/src/main/java/com/uts/expense_tracker/service/UserActivityService.java
+expense_tracker/src/main/java/com/uts/expense_tracker/controller/AdminController.java
+expense_tracker/src/main/java/com/uts/expense_tracker/controller/AuthController.java (modified)
+expense_tracker/src/main/java/com/uts/expense_tracker/controller/ExpenseController.java (modified)
+expense_tracker/src/main/java/com/uts/expense_tracker/service/UserService.java (modified)
+expense_tracker/src/main/java/com/uts/expense_tracker/config/JwtFilter.java (modified)
+expense_tracker/src/main/java/com/uts/expense_tracker/config/CorsConfig.java (modified)
+expense_tracker/src/main/java/com/uts/expense_tracker/config/SecurityConfig.java (modified)
+
+Frontend files:
+
+frontend/src/pages/AdminPage.jsx
+frontend/src/features/admin/ActivityLog.jsx
+frontend/src/features/admin/UserManagement.jsx
+frontend/src/pages/LoginPage.jsx
+frontend/src/styles/index.css (modified)
+
+What I built:
+I built the admin module, which includes a User Management table and an Activity Log. The Activity Log automatically records every user action — registration, login, and expense operations — using a UserActivity entity stored in the database. The User Management table allows admins to edit user roles or delete accounts, with a restriction that prevents admins from deleting their own account.
+Admin routes are protected by two layers: Spring Security's hasRole('ADMIN') in SecurityConfig, and @PreAuthorize("hasRole('ADMIN')") on the AdminController. I also updated ExpenseController to read the real user ID from the JWT token instead of a hardcoded value, so each user only sees their own expenses.
