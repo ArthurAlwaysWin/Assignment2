@@ -131,5 +131,3 @@ After updating the role, log out and log in again so the new JWT includes the `A
 ## Current Notes
 
 - Recommended environment: Java 21+, Node.js, MySQL 8+, modern browser.
-- The React frontend is the current application UI. The old Assignment 1 root-level `index.html`, `style.css`, and `app.js` files have been removed to avoid confusion.
-- The profile page UI exists, but backend endpoints for updating profile email and password still need to be completed before final submission.
