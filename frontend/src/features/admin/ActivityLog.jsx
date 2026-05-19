@@ -100,6 +100,7 @@ export default function ActivityLog() {
               <thead>
               <tr>
                 <th>Time</th>
+                <th>User ID</th>
                 <th>Username</th>
                 <th>Action</th>
                 <th>Detail</th>
@@ -110,6 +111,7 @@ export default function ActivityLog() {
               {filteredActivities.map((a) => (
                   <tr key={a.id}>
                     <td>{formatTimestamp(a.timestamp)}</td>
+                    <td>{a.userId}</td>
                     <td>{getUsernameById(a.userId)}</td>
                     <td>
                   <span className={`action-badge action-${a.action.toLowerCase()}`}>
