@@ -56,6 +56,11 @@ export default function ActivityLog() {
     }
   };
 
+  const getUsernameById = (userId) => {
+    const user = users.find((u) => u.id === userId);
+    return user ? user.username : `User #${userId}`;
+  };
+
   const formatTimestamp = (ts) => {
     if (!ts) return "-";
     return new Date(ts).toLocaleString("en-AU", {
@@ -95,7 +100,7 @@ export default function ActivityLog() {
               <thead>
               <tr>
                 <th>Time</th>
-                <th>User ID</th>
+                <th>Username</th>
                 <th>Action</th>
                 <th>Detail</th>
                 <th>Delete</th>
@@ -105,7 +110,7 @@ export default function ActivityLog() {
               {filteredActivities.map((a) => (
                   <tr key={a.id}>
                     <td>{formatTimestamp(a.timestamp)}</td>
-                    <td>{a.userId}</td>
+                    <td>{getUsernameById(a.userId)}</td>
                     <td>
                   <span className={`action-badge action-${a.action.toLowerCase()}`}>
                     {a.action}
