@@ -126,6 +126,7 @@ export default function ExpenseForm({ editingExpense, onSubmitSuccess, onCancelE
               name="expenseDate"
               type="date"
               lang="en"
+              max={new Date().toISOString().split('T')[0]}
               value={formData.expenseDate}
               onChange={handleChange}
             />
