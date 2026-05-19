@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -26,6 +27,8 @@ public class AdminController {
 
     @Autowired
     private UserRepository userRepository;
+
+    record UserDTO(Integer id, String username, String email, String role) {}
 
     @GetMapping("/activities")
     public ResponseEntity<List<UserActivity>> getAllActivities() {
@@ -44,8 +47,11 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userRepository.findAll());
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> users = userRepository.findAll().stream()
+                .map(u -> new UserDTO(u.getId(), u.getUsername(), u.getEmail(), u.getRole()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(users);
     }
 
     @PutMapping("/users/{id}")
@@ -58,7 +64,7 @@ public class AdminController {
         if (body.containsKey("email")) user.setEmail(body.get("email"));
         if (body.containsKey("role")) user.setRole(body.get("role"));
         userRepository.save(user);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(new UserDTO(user.getId(), user.getUsername(), user.getEmail(), user.getRole()));
     }
 
     @DeleteMapping("/users/{id}")
