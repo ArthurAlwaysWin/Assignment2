@@ -3,7 +3,7 @@ import React from 'react';
 export default function ExpenseSummary({ expenses }) {
   // Calculate total expenses
   const totalAmount = expenses.reduce((sum, expense) => sum + Number(expense.amount), 0);
-
+  
   // Group expenses by category
   const categoryTotals = expenses.reduce((acc, expense) => {
     const amount = Number(expense.amount);

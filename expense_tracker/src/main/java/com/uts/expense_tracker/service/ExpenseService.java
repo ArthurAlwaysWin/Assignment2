@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.time.LocalDate;
 
 @Service
 public class ExpenseService {
@@ -65,7 +66,7 @@ public class ExpenseService {
      * Always sets userId on the server; never trusts userId from the request body alone.
      */
     public Expense saveExpense(Expense expense, Integer userId) {
-        validateAmount(expense);
+        validateExpense(expense);
         expense.setUserId(userId);
         return expenseRepository.save(expense);
     }
@@ -77,7 +78,7 @@ public class ExpenseService {
                 .orElseThrow(() -> new NoSuchElementException(
                         "Cannot find record with id [" + id + "]"
                 ));
-        validateAmount(updated);
+        validateExpense(updated);
         updated.setId(id);
         updated.setUserId(userId);
         return expenseRepository.save(updated);
@@ -96,9 +97,12 @@ public class ExpenseService {
     /**
      * Shared validation for create and update.
      */
-    private void validateAmount(Expense expense) {
+    private void validateExpense(Expense expense) {
         if (expense.getAmount() != null && expense.getAmount().signum() <= 0) {
             throw new IllegalArgumentException("Amount must be greater than zero"); 
         }
-    }
+        if (expense.getExpenseDate() != null && expense.getExpenseDate().isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Expense date cannot be in the future");
+        }
+}
 }
