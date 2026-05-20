@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../../api/request';
 
 // Default empty form state
@@ -15,6 +15,13 @@ export default function ExpenseForm({ editingExpense, onSubmitSuccess, onCancelE
   const [formData, setFormData] = useState(INITIAL_STATE);
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // 获取本地时区的今天日期 (YYYY-MM-DD)
+  const getTodayLocalString = () => {
+    const date = new Date();
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return date.toISOString().split('T')[0];
+  };
 
   // 2. Populate form if we are editing an existing expense
   useEffect(() => {
@@ -126,6 +133,7 @@ export default function ExpenseForm({ editingExpense, onSubmitSuccess, onCancelE
               name="expenseDate"
               type="date"
               lang="en"
+              max={getTodayLocalString()}
               value={formData.expenseDate}
               onChange={handleChange}
             />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import SearchBar from '../features/expense/SearchBar';
 import ExpenseFilter from '../features/expense/ExpenseFilter';
 import ExpenseForm from '../features/expense/ExpenseForm';
@@ -64,7 +64,7 @@ export default function ExpensePage() {
     }
 
     setFilteredExpenses(result);
-  }, [expenses, searchTerm, filters]);
+  }, [expenses, searchTerm, filters.category, filters.startDate, filters.endDate]);
 
   // 4. Handle Deleting an Expense
   const handleDelete = async (id) => {
