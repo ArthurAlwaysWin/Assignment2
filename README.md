@@ -120,14 +120,32 @@ http://localhost:5173
 
 ## Admin Account Note
 
-If there is no admin account yet, register a normal account first, then update its role in MySQL:
+A default admin account is included in the database export (`database.sql`).
 
-```sql
-USE expenses_tracker;
-UPDATE users SET role = 'ADMIN' WHERE username = 'admin';
-```
+- **Username:** `admin`
+- **Password:** `admin123`
+
+After importing the database, you can log in directly with this account to access the Admin Panel.
 
 After updating the role, log out and log in again so the new JWT includes the `ADMIN` role.
+
+### How to Access the Admin Panel
+
+1. Start the backend and frontend
+2. Go to `http://localhost:5173/login`
+3. Log in with `admin` / `admin123`
+4. The **Admin** link will appear in the navigation bar
+5. Click **Admin** to open the Admin Panel
+
+### Promoting a User to Admin
+
+If you want to make another account an admin, run this SQL command:
+
+```sql
+UPDATE users SET role = 'ADMIN' WHERE username = 'your_username';
+```
+
+Then log out and log back in for the change to take effect.
 
 ## Current Notes
 
