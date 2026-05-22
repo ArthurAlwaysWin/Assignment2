@@ -58,6 +58,8 @@ The project extends the original Assignment 1 expense tracker into a React front
   - `src/main/resources/application.properties` - database and JWT configuration
 - `database.sql` - database bootstrap script
 - `README.md` - project documentation
+- `WORKLOAD.md` - team workload statement and file ownership
+- `DEMO_SCRIPT.md` - demo recording checklist and timeline
 
 ## How to Run
 
