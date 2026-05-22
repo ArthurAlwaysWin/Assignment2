@@ -83,6 +83,8 @@ This document records the agreed team workload, the feature ownership for each m
 - `frontend/src/pages/AdminPage.jsx`
 - `frontend/src/features/admin/UserManagement.jsx`
 - `frontend/src/features/admin/ActivityLog.jsx`
+- `expense_tracker/.../controller/ExpenseController.java`
+- `frontend/src/pages/LoginPage.jsx`
 
 ## Xiao Li - Project Structure, Shared UI, Documentation, and Integration
 
