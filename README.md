@@ -125,14 +125,14 @@ A default admin account is included in the database export (`database.sql`).
 - **Username:** `admin`
 - **Password:** `admin123`
 
-Before the admin account is available, you need to import the database.sql file.
+Before the admin account is available, you need to import the `database.sql` file.
 Run the following command in your terminal:
 
-Windows:
-"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p < database.sql
+**Windows:**
+
+“C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe” -u root -p < database.sql
 
 Enter your MySQL root password when prompted.
-After the import completes, you can log in with admin / admin123.
 
 After importing the database, you can log in directly with this account to access the Admin Panel.
 
