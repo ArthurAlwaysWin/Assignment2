@@ -130,7 +130,9 @@ Run the following command in your terminal:
 
 **Windows:**
 
-“C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe” -u root -p < database.sql
+```
+"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p < database.sql
+```
 
 Enter your MySQL root password when prompted.
 
