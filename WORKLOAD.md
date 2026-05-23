@@ -10,9 +10,9 @@ This document records the agreed team workload, the feature ownership for each m
 
 | Member     | Student ID | Main Module                                                  |
 | ---------- | ---------- | ------------------------------------------------------------ |
-| Chiyu Song | 14087934   | User authentication and security                             |
-| Qihang Liu | 14372104   | Expense management                                           |
-| Feixu Chen | 25664297   | Admin module and user activity log                           |
+| Chiyu Song | 14372104   | User authentication and security                             |
+| Qihang Liu | 25664297   | Expense management                                           |
+| Feixu Chen | 14087934   | Admin module and user activity log                           |
 | Xiao Li    | 25962717   | Project structure, shared UI, documentation, and integration |
 
 ## Chiyu Song - User Authentication and Security
