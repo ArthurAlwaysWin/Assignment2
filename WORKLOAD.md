@@ -85,6 +85,7 @@ This document records the agreed team workload, the feature ownership for each m
 - `frontend/src/features/admin/ActivityLog.jsx`
 - `expense_tracker/.../controller/ExpenseController.java`
 - `frontend/src/pages/LoginPage.jsx`
+- `database.sql`
 
 ## Xiao Li - Project Structure, Shared UI, Documentation, and Integration
 
@@ -118,5 +119,4 @@ This document records the agreed team workload, the feature ownership for each m
 - `frontend/src/styles/index.css`
 - `expense_tracker/src/main/java/com/uts/expense_tracker/config/CorsConfig.java`
 - `README.md`
-- `database.sql`
 - `WORKLOAD.md`
