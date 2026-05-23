@@ -107,17 +107,6 @@ The frontend runs at:
 http://localhost:5173
 ```
 
-## Demo Flow
-
-1. Register a new user.
-2. Log in with the new account.
-3. Add several expense records.
-4. Search expenses using the real-time search bar.
-5. Filter by category or date range.
-6. Edit and delete an expense.
-7. Log in as an admin user.
-8. Open the admin panel to view users and activity logs.
-
 ## Admin Account Note
 
 A default admin account is included in the database export (`database.sql`).
