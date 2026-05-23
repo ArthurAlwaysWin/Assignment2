@@ -17,7 +17,11 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const res = await api.post('/auth/login', { username, password });
-      login(res.data.token, { username: res.data.username, role: res.data.role });
+      login(res.data.token, {
+        username: res.data.username,
+        email: res.data.email,
+        role: res.data.role,
+      });
       navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid username or password.');

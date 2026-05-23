@@ -6,6 +6,8 @@ import com.uts.expense_tracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -52,6 +54,48 @@ public class AuthController {
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        }
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<?> updateProfile(@RequestBody Map<String, String> body,
+                                           @AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            User updated = userService.updateEmail(userDetails.getUsername(), body.get("email"));
+            userActivityService.logActivity(
+                    updated.getId(),
+                    "UPDATE_PROFILE",
+                    "Updated email"
+            );
+
+            Map<String, String> response = new HashMap<>();
+            response.put("username", updated.getUsername());
+            response.put("email", updated.getEmail());
+            response.put("role", updated.getRole());
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<?> changePassword(@RequestBody Map<String, String> body,
+                                            @AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            userService.changePassword(
+                    userDetails.getUsername(),
+                    body.get("oldPassword"),
+                    body.get("newPassword")
+            );
+
+            Integer userId = userService.getUserIdByUsername(userDetails.getUsername());
+            userActivityService.logActivity(userId, "UPDATE_PROFILE", "Changed password");
+
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Password changed successfully");
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }

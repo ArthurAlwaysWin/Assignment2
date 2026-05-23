@@ -50,14 +50,51 @@ public class UserService {
         Map<String, String> response = new HashMap<>();
         response.put("token", token);
         response.put("username", user.getUsername());
+        response.put("email", user.getEmail());
         response.put("role", user.getRole());
 
         return response;
+    }
+
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public Integer getUserIdByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"))
                 .getId();
+    }
+
+    public User updateEmail(String username, String email) {
+        User user = getUserByUsername(username);
+
+        if (email == null || email.trim().isEmpty()) {
+            throw new RuntimeException("Email cannot be empty");
+        }
+
+        String newEmail = email.trim();
+        if (!newEmail.equals(user.getEmail()) && userRepository.existsByEmail(newEmail)) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        user.setEmail(newEmail);
+        return userRepository.save(user);
+    }
+
+    public void changePassword(String username, String oldPassword, String newPassword) {
+        User user = getUserByUsername(username);
+
+        if (oldPassword == null || !passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new RuntimeException("Current password is incorrect");
+        }
+
+        if (newPassword == null || newPassword.length() < 6) {
+            throw new RuntimeException("New password must be at least 6 characters");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 }
