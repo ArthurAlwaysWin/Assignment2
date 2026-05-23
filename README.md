@@ -147,6 +147,6 @@ UPDATE users SET role = 'ADMIN' WHERE username = 'your_username';
 
 Then log out and log back in for the change to take effect.
 
-## Current Notes
+## Notes
 
 - Recommended environment: Java 21+, Node.js, MySQL 8+, modern browser.
